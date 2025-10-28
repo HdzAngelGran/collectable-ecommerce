@@ -20,35 +20,35 @@ public class UserController {
     private final Gson gson = new Gson();
     private final UserService userService = new UserService();
 
-    public String getByFilter(Request req, Response res) {
+    public List<User> getByFilter(Request req, Response res) {
         Filter filter = FilterMapper.toFilter(req);
         List<User> users = userService.findUserByFilter(filter);
 
         res.type(RES_TYPE);
         res.status(HttpStatus.OK_200);
-        return gson.toJson(users);
+        return users;
     }
 
-    public String getById(Request req, Response res) {
+    public User getById(Request req, Response res) {
         String uuid = req.params("uuid");
         User user = userService.findUserById(UUID.fromString(uuid));
 
         res.type(RES_TYPE);
         res.status(HttpStatus.OK_200);
-        return gson.toJson(user);
+        return user;
     }
 
-    public String add(Request req, Response res) {
+    public User add(Request req, Response res) {
         String jsonBody = req.body();
         UserRequest user = gson.fromJson(jsonBody, UserRequest.class);
         User newUser = userService.createUser(user);
 
         res.type(RES_TYPE);
         res.status(HttpStatus.CREATED_201);
-        return gson.toJson(newUser);
+        return newUser;
     }
 
-    public String update(Request req, Response res) {
+    public JsonObject update(Request req, Response res) {
         String uuid = req.params("uuid");
         String jsonBody = req.body();
         UserRequest user = gson.fromJson(jsonBody, UserRequest.class);
@@ -58,10 +58,10 @@ public class UserController {
         res.status(HttpStatus.OK_200);
         JsonObject jsonRes = new JsonObject();
         jsonRes.addProperty("message", "User deleted successfully");
-        return gson.toJson(jsonRes);
+        return jsonRes;
     }
 
-    public String delete(Request req, Response res) {
+    public JsonObject delete(Request req, Response res) {
         String uuid = req.params("uuid");
         userService.deleteUser(UUID.fromString(uuid));
 
@@ -69,10 +69,10 @@ public class UserController {
         res.status(HttpStatus.OK_200);
         JsonObject jsonRes = new JsonObject();
         jsonRes.addProperty("message", "User deleted successfully");
-        return gson.toJson(jsonRes);
+        return jsonRes;
     }
 
-    public String exist(Request req, Response res) {
+    public JsonObject exist(Request req, Response res) {
         String uuid = req.params("uuid");
         boolean exists = userService.userExist(UUID.fromString(uuid));
 
@@ -80,6 +80,6 @@ public class UserController {
         res.status(HttpStatus.OK_200);
         JsonObject jsonRes = new JsonObject();
         jsonRes.addProperty("exists", exists);
-        return gson.toJson(jsonRes);
+        return jsonRes;
     }
 }

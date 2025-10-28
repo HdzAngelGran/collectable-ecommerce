@@ -18,25 +18,25 @@ public class ItemController {
     private final ItemService itemService = new ItemService();
     private static final String RES_TYPE = "application/json";
 
-    public String getByFilter(Request req, Response res) {
+    public List<Item> getByFilter(Request req, Response res) {
         Filter filter = FilterMapper.toFilter(req);
         List<Item> items = itemService.findItemByFilter(filter);
 
         res.type(RES_TYPE);
         res.status(200);
-        return gson.toJson(items);
+        return items;
     }
 
-    public String getById(Request req, Response res) {
+    public Item getById(Request req, Response res) {
         String uuid = req.params("uuid");
         Item item = itemService.findItemById(UUID.fromString(uuid));
 
         res.type(RES_TYPE);
         res.status(200);
-        return gson.toJson(item);
+        return item;
     }
 
-    public String add(Request req, Response res) {
+    public Item add(Request req, Response res) {
         String jsonBody = req.body();
 
         ItemRequest itemRequest = gson.fromJson(jsonBody, ItemRequest.class);
@@ -44,7 +44,7 @@ public class ItemController {
 
         res.type(RES_TYPE);
         res.status(201);
-        return gson.toJson(newItem);
+        return newItem;
     }
 
 }
