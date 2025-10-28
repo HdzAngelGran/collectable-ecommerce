@@ -1,11 +1,11 @@
 package org.arkn37;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import org.arkn37.controller.ItemController;
 import org.arkn37.controller.UserController;
 import org.arkn37.exception.NotFoundException;
 import org.arkn37.utils.ApiRoute;
+import org.arkn37.utils.ExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,6 @@ public class Main {
     private static final Gson gson = new Gson();
     private static final ItemController itemController = new ItemController();
     private static final UserController userController = new UserController();
-    private static final String RES_TYPE = "application/json";
 
     public static void main(String[] args) {
         port(8080);
@@ -41,31 +40,10 @@ public class Main {
             });
         });
 
-        exception(NotFoundException.class, (exception, req, res) -> {
-            res.type(RES_TYPE);
-            res.status(404);
-
-            JsonObject jsonRes = new JsonObject();
-            jsonRes.addProperty("error", exception.getMessage());
-            res.body(jsonRes.toString());
-        });
-
-        exception(IllegalArgumentException.class, (exception, req, res) -> {
-            res.type(RES_TYPE);
-            res.status(400);
-
-            JsonObject jsonRes = new JsonObject();
-            jsonRes.addProperty("error", exception.getMessage());
-            res.body(jsonRes.toString());
-        });
-
-        exception(Exception.class, (exception, req, res) -> {
-            res.type(RES_TYPE);
-            res.status(500);
-
-            JsonObject jsonRes = new JsonObject();
-            jsonRes.addProperty("error", exception.getMessage());
-            res.body(jsonRes.toString());
-        });
+        notFound(ExceptionHandler::resourceNotFound);
+        internalServerError(ExceptionHandler::internalServerError);
+        exception(NotFoundException.class, ExceptionHandler::dataNotFound);
+        exception(IllegalArgumentException.class, ExceptionHandler::badRequest);
+        exception(Exception.class, ExceptionHandler::exception);
     }
 }
