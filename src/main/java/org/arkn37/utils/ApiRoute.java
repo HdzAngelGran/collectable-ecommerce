@@ -3,6 +3,7 @@ package org.arkn37.utils;
 public enum ApiRoute {
     API_V1("/api/v1"),
     USERS("/users"),
+    ITEMS("/items"),
     PARAM_UUID(":uuid"),
     ;
 

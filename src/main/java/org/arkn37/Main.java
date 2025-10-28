@@ -1,6 +1,7 @@
 package org.arkn37;
 
 import com.google.gson.JsonObject;
+import org.arkn37.controller.ItemController;
 import org.arkn37.controller.UserController;
 import org.arkn37.exeption.NotFoundException;
 import org.arkn37.utils.ApiRoute;
@@ -12,6 +13,7 @@ import static spark.Spark.*;
 public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
+    private static final ItemController itemController = new ItemController();
     private static final UserController userController = new UserController();
     private static final String RES_TYPE = "application/json";
 
@@ -27,6 +29,12 @@ public class Main {
                 put("/" + ApiRoute.PARAM_UUID, userController::update);
                 delete("/" + ApiRoute.PARAM_UUID, userController::delete);
                 options("/" + ApiRoute.PARAM_UUID, userController::exist);
+            });
+
+            path(ApiRoute.ITEMS.toString(), () -> {
+                get("/", itemController::getByFilter);
+                get("/" + ApiRoute.PARAM_UUID, itemController::getById);
+                post("/", itemController::add);
             });
         });
 
