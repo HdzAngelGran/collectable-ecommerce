@@ -57,7 +57,7 @@ public class UserController {
         res.type(RES_TYPE);
         res.status(HttpStatus.OK_200);
         JsonObject jsonRes = new JsonObject();
-        jsonRes.addProperty("message", "User deleted successfully");
+        jsonRes.addProperty("message", "User updated successfully");
         return jsonRes;
     }
 
