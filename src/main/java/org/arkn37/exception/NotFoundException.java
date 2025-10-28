@@ -1,4 +1,4 @@
-package org.arkn37.exeption;
+package org.arkn37.exception;
 
 public class NotFoundException extends RuntimeException {
 

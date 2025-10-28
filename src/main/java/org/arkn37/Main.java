@@ -3,7 +3,7 @@ package org.arkn37;
 import com.google.gson.JsonObject;
 import org.arkn37.controller.ItemController;
 import org.arkn37.controller.UserController;
-import org.arkn37.exeption.NotFoundException;
+import org.arkn37.exception.NotFoundException;
 import org.arkn37.utils.ApiRoute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

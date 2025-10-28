@@ -1,6 +1,6 @@
 package org.arkn37.repository;
 
-import org.arkn37.exeption.NotFoundException;
+import org.arkn37.exception.NotFoundException;
 import org.arkn37.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
