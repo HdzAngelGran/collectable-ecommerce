@@ -1,0 +1,25 @@
+<html lang="es">
+<head>
+    <title>
+        {{$tab-title}}
+            Page not found
+        {{/tab-title}}
+    </title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="m-0 p-0 w-full min-h-dvh grid grid-flow-col grid-rows-[auto_1fr_auto] gap-4">
+{{>header}}
+<main class="px-10 flex flex-col items-center">
+    <h1 class="mb-2 text-lg font-bold">
+        {{$headline}}
+            Page not found
+        {{/headline}}
+    </h1>
+    {{$content}}
+        <h1>404</h1>
+        <h2>Page not found</h2>
+    {{/content}}
+</main>
+{{>footer}}
+</body>
+</html>
