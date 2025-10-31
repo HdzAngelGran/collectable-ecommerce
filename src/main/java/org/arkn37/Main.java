@@ -2,9 +2,12 @@ package org.arkn37;
 
 import com.google.gson.Gson;
 import org.arkn37.controller.ItemController;
+import org.arkn37.controller.OfferController;
 import org.arkn37.controller.PageController;
 import org.arkn37.controller.UserController;
 import org.arkn37.exception.NotFoundException;
+import org.arkn37.repository.OfferRepository;
+import org.arkn37.service.OfferService;
 import org.arkn37.utils.ApiRoute;
 import org.arkn37.utils.ExceptionHandler;
 import org.slf4j.Logger;
@@ -19,10 +22,17 @@ public class Main {
     private static final Gson gson = new Gson();
     private static final ItemController itemController = new ItemController();
     private static final UserController userController = new UserController();
-    private static final PageController pageController = new PageController();
+
+    private static final OfferRepository offerRepository = new OfferRepository();
+    private static final OfferService offerService = new OfferService(offerRepository);
+
+    private static final PageController pageController = new PageController(offerService);
+    private static final OfferController offerController = new OfferController(offerService);
 
     public static void main(String[] args) {
         port(8080);
+
+        staticFiles.location("/public");
 
         path(ApiRoute.API_V1.toString(), () -> {
             before("/*", (q, a) -> log.info("Received api call"));
@@ -37,14 +47,20 @@ public class Main {
             });
 
             path(ApiRoute.ITEMS.toString(), () -> {
-                get("/", itemController::getByFilter, gson::toJson);
-                get("/" + ApiRoute.PARAM_UUID, itemController::getById, gson::toJson);
-                post("/", itemController::add, gson::toJson);
+                before("/*", (q, a) -> log.info("Received api call items"));
+                get("", itemController::getByFilter, gson::toJson);
+                post("", itemController::add, gson::toJson);
+                path("/" + ApiRoute.PARAM_UUID, () -> {
+                    get("", itemController::getById, gson::toJson);
+                    get("/offers", offerController::getByItemUuid, gson::toJson);
+                    post("/offers", offerController::add, gson::toJson);
+                });
             });
         });
 
         path("/", () -> {
             get("", pageController::showItems, new MustacheTemplateEngine());
+            get("/" + ApiRoute.PARAM_UUID + "/offers", pageController::itemOffers, new MustacheTemplateEngine());
         });
 
         notFound(ExceptionHandler::resourceNotFound);
