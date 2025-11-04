@@ -10,7 +10,11 @@ import java.util.UUID;
 
 public class UserService {
 
-    private final UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository;
+    
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public List<User> findUserByFilter(Filter filter) {
         return userRepository.findByFilter(filter.getSize(), filter.getPage());

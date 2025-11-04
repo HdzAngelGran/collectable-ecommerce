@@ -18,7 +18,11 @@ public class UserController {
 
     private static final String RES_TYPE = "application/json";
     private final Gson gson = new Gson();
-    private final UserService userService = new UserService();
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     public List<User> getByFilter(Request req, Response res) {
         Filter filter = FilterMapper.toFilter(req);

@@ -29,7 +29,9 @@ public class Main {
     private static final ItemService itemService = new ItemService(itemRepository);
     private static final ItemController itemController = new ItemController(itemService);
 
-    private static final UserController userController = new UserController();
+    private static final UserRepository userRepository = new UserRepository();
+    private static final UserService userService = new UserService(userRepository);
+    private static final UserController userController = new UserController(userService);
 
     private static final OfferRepository offerRepository = new OfferRepository();
     private static final OfferService offerService = new OfferService(offerRepository);

@@ -19,10 +19,11 @@ import java.util.UUID;
 public class PageController {
 
     private static final Logger log = LoggerFactory.getLogger(PageController.class);
-    private final ItemService itemService = new ItemService();
+    private final ItemService itemService;
     private final OfferService offerService;
 
-    public PageController(OfferService offerService) {
+    public PageController(ItemService itemService, OfferService offerService) {
+        this.itemService = itemService;
         this.offerService = offerService;
     }
 
