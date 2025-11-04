@@ -3,6 +3,7 @@
         {{title}}
     {{/tab-title}}
     {{$head-content}}
+        <script type="module" src="/scripts/notificationWebSocket.js"></script>
         <script type="module" src="/scripts/offers.js"></script>
     {{/head-content}}
     {{$headline}}
@@ -48,7 +49,10 @@
             <article class="w-full max-w-md  mx-auto px-6 py-5 flex flex-col rounded-md shadow-lg">
                 <div>
                     <span class="text-lg font-bold">Current price</span>
-                    <span class="text-lg font-bold text-[#E26038]">${{item.price}} USD</span>
+                    <span class="text-lg font-bold text-[#E26038]">
+                        <span id="current-offer">{{item.price}}</span>
+                        USD
+                    </span>
                 </div>
                 <p class="font-semibold mt-4 text-gray-800">Add Offer</p>
                 <form id="offer-form" method="POST">
@@ -63,7 +67,8 @@
                     <div class="mt-6">
                         <label for="amount" class="block text-sm font-medium text-gray-700">Amount:</label>
                         <div class="mt-1">
-                            <input type="text" id="item-amount" name="item-amount"
+                            <input type="number" id="item-amount" name="item-amount"
+                                   min="{{minPrice}}"
                                    class="block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:ring-blue-500 focus:border-blue-500 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-500 focus:outline focus:outline-sky-500 focus:invalid:border-pink-500 focus:invalid:outline-pink-500 sm:text-sm">
                         </div>
                     </div>
@@ -75,7 +80,7 @@
                     </div>
                 </form>
             </article>
-            <article class="w-full max-w-md  mx-auto px-6 py-5 flex flex-col rounded-md shadow-lg">
+            <article id="offer-list" class="w-full max-w-md  mx-auto px-6 py-5 flex flex-col rounded-md shadow-lg">
                 {{#offers}}
                     {{>offer-list}}
                 {{/offers}}

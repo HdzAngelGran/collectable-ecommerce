@@ -47,4 +47,10 @@ public class OfferRepository {
         log.info("Offer saved to 'database': {}", offer.getName());
         return offer;
     }
+
+    public Optional<Offer> findLastestByItemId(UUID itemUuid) {
+        return database.values().stream()
+                .filter(o -> o.getItemUuid().equals(itemUuid))
+                .min((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
+    }
 }

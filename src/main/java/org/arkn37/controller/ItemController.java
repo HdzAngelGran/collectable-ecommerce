@@ -3,6 +3,7 @@ package org.arkn37.controller;
 import com.google.gson.Gson;
 import org.arkn37.dto.Filter;
 import org.arkn37.dto.ItemRequest;
+import org.arkn37.dto.ItemResponse;
 import org.arkn37.utils.FilterMapper;
 import org.arkn37.model.Item;
 import org.arkn37.service.ItemService;
@@ -22,18 +23,18 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    public List<Item> getByFilter(Request req, Response res) {
+    public List<ItemResponse> getByFilter(Request req, Response res) {
         Filter filter = FilterMapper.toFilter(req);
-        List<Item> items = itemService.findItemByFilter(filter);
+        List<ItemResponse> items = itemService.findItemByFilter(filter);
 
         res.type(RES_TYPE);
         res.status(200);
         return items;
     }
 
-    public Item getById(Request req, Response res) {
+    public ItemResponse getById(Request req, Response res) {
         String uuid = req.params("uuid");
-        Item item = itemService.findItemById(UUID.fromString(uuid));
+        ItemResponse item = itemService.findItemResponseById(UUID.fromString(uuid));
 
         res.type(RES_TYPE);
         res.status(200);

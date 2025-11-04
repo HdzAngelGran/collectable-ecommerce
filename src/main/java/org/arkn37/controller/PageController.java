@@ -1,6 +1,7 @@
 package org.arkn37.controller;
 
 import org.arkn37.dto.Filter;
+import org.arkn37.dto.ItemResponse;
 import org.arkn37.model.Item;
 import org.arkn37.model.Offer;
 import org.arkn37.service.ItemService;
@@ -31,7 +32,7 @@ public class PageController {
         HashMap<String, Object> model = new HashMap<>();
 
         Filter filter = FilterMapper.toFilter(req);
-        List<Item> items = itemService.findItemByFilter(filter);
+        List<ItemResponse> items = itemService.findItemByFilter(filter);
         model.put("title", "Home");
         model.put("headline", "Collectables");
         log.info("Item size: {}", items.size());
@@ -46,7 +47,7 @@ public class PageController {
         model.put("headline", "Item Offers");
 
         UUID uuid = UUID.fromString(req.params("uuid"));
-        Item item = itemService.findItemById(uuid);
+        ItemResponse item = itemService.findItemResponseById(uuid);
         model.put("item", item);
 
         List<Offer> offers = offerService.findByItemUuid(item.getUuid());

@@ -2,6 +2,7 @@ package org.arkn37.controller;
 
 import com.google.gson.Gson;
 import org.arkn37.dto.OfferRequest;
+import org.arkn37.exception.NotFoundException;
 import org.arkn37.model.Offer;
 import org.arkn37.service.OfferService;
 import org.slf4j.Logger;
@@ -43,5 +44,14 @@ public class OfferController {
         res.type(RES_TYPE);
         res.status(201);
         return newOffer;
+    }
+
+    public Offer getLastestByItemUuid(Request req, Response res) {
+        String itemUuid = req.params("uuid");
+
+        res.type(RES_TYPE);
+        res.status(200);
+        return offerService.findLastestByItemUuid(UUID.fromString(itemUuid))
+                .orElseThrow(() -> new NotFoundException("Offer not found"));
     }
 }

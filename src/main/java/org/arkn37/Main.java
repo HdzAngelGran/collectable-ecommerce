@@ -1,10 +1,7 @@
 package org.arkn37;
 
 import com.google.gson.Gson;
-import org.arkn37.controller.ItemController;
-import org.arkn37.controller.OfferController;
-import org.arkn37.controller.PageController;
-import org.arkn37.controller.UserController;
+import org.arkn37.controller.*;
 import org.arkn37.exception.NotFoundException;
 import org.arkn37.repository.ItemRepository;
 import org.arkn37.repository.OfferRepository;
@@ -34,7 +31,7 @@ public class Main {
     private static final UserController userController = new UserController(userService);
 
     private static final OfferRepository offerRepository = new OfferRepository();
-    private static final OfferService offerService = new OfferService(offerRepository);
+    private static final OfferService offerService = new OfferService(offerRepository, itemService);
     private static final OfferController offerController = new OfferController(offerService);
 
     private static final PageController pageController = new PageController(itemService, offerService);
@@ -43,6 +40,8 @@ public class Main {
         port(8080);
 
         staticFiles.location("/public");
+
+        webSocket("/notification", NotificationWebSocketController.class);
 
         path(ApiRoute.API_V1.toString(), () -> {
             before("/*", (q, a) -> log.info("Received api call"));
@@ -63,6 +62,7 @@ public class Main {
                 path("/" + ApiRoute.PARAM_UUID, () -> {
                     get("", itemController::getById, gson::toJson);
                     get("/offers", offerController::getByItemUuid, gson::toJson);
+                    get("/offers/latest", offerController::getLastestByItemUuid, gson::toJson);
                     post("/offers", offerController::add, gson::toJson);
                 });
             });
