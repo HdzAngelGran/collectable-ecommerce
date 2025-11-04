@@ -10,7 +10,11 @@ import java.util.UUID;
 
 public class ItemService {
 
-    private final ItemRepository itemRepository = new ItemRepository();
+    private final ItemRepository itemRepository;
+
+    public ItemService(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
 
     public Item findItemById(UUID id) {
         return itemRepository.findById(id);

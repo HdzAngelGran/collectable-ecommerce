@@ -15,8 +15,12 @@ import java.util.UUID;
 public class ItemController {
 
     private final Gson gson = new Gson();
-    private final ItemService itemService = new ItemService();
+    private final ItemService itemService;
     private static final String RES_TYPE = "application/json";
+
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
     public List<Item> getByFilter(Request req, Response res) {
         Filter filter = FilterMapper.toFilter(req);

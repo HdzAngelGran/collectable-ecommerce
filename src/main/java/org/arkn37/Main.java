@@ -6,8 +6,12 @@ import org.arkn37.controller.OfferController;
 import org.arkn37.controller.PageController;
 import org.arkn37.controller.UserController;
 import org.arkn37.exception.NotFoundException;
+import org.arkn37.repository.ItemRepository;
 import org.arkn37.repository.OfferRepository;
+import org.arkn37.repository.UserRepository;
+import org.arkn37.service.ItemService;
 import org.arkn37.service.OfferService;
+import org.arkn37.service.UserService;
 import org.arkn37.utils.ApiRoute;
 import org.arkn37.utils.ExceptionHandler;
 import org.slf4j.Logger;
@@ -20,14 +24,18 @@ public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
     private static final Gson gson = new Gson();
-    private static final ItemController itemController = new ItemController();
+
+    private static final ItemRepository itemRepository = new ItemRepository();
+    private static final ItemService itemService = new ItemService(itemRepository);
+    private static final ItemController itemController = new ItemController(itemService);
+
     private static final UserController userController = new UserController();
 
     private static final OfferRepository offerRepository = new OfferRepository();
     private static final OfferService offerService = new OfferService(offerRepository);
-
-    private static final PageController pageController = new PageController(offerService);
     private static final OfferController offerController = new OfferController(offerService);
+
+    private static final PageController pageController = new PageController(itemService, offerService);
 
     public static void main(String[] args) {
         port(8080);
